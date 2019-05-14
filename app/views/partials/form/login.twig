@@ -1,0 +1,20 @@
+{{ form_open("/") }}
+<div class="form-group">
+	{{ form_input({
+		class : 'form-control form-control-sm',
+		name : 'login',
+		placeholder: "login",
+		value: set_value('login','')
+	}) }}
+	{{ form_error('login') }}
+</div>
+<div class="form-group">
+	{{ form_password({
+		class : 'form-control form-control-sm',
+		name : 'password',
+		placeholder: 'password',
+	}) }}
+	{{ form_error('password') }}
+</div>
+{{ form_submit('signin',"sign in", { class : 'btn btn-secondary btn-sm text-center' }) }}
+{{ form_close() }}

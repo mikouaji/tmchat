@@ -20,7 +20,22 @@ $config['acl'] = [
 		'home'=>[
 			'index'=>[
 				'allow'=>['GUEST'],
+                'redirect'=>'chat',
 			],
 		],
+        'chat'=>[
+            'index'=>[
+                'allow'=>['MEMBER'],
+            ],
+            'logout'=>[
+                'allow'=>['MEMBER'],
+            ],
+        ],
+        'api'=>[
+            'get'=>[
+                'allow'=>['MEMBER'],
+                'redirect'=>'api/error'
+            ],
+        ]
 	],
 ];

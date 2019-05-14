@@ -1,0 +1,29 @@
+body{
+    font-family: 'Cutive Mono', monospace;
+}
+.loader{
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+}
+ul.topic-window,
+ul.topic-list{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+ul.topic-list li{
+    cursor: pointer;
+}
+ul.topic-window{
+    vertical-align: bottom;
+}
+ul.topic-window li{
+    border-bottom: solid 1px #2b3e50;
+}
+ul.topic-window li:nth-of-type(2){
+    background-color: #465464;
+}

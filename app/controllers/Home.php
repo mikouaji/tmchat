@@ -7,7 +7,9 @@
  */
 
 
-use app\core\APP_Controller as Controller;;
+use app\core\APP_Controller as Controller;
+use app\core\services\FlashMessage;
+use app\models\User;
 
 class Home extends Controller
 {
@@ -19,6 +21,15 @@ class Home extends Controller
 
 	public function index()
 	{
-
+        if($this->form_validation->run('login')!==FALSE){
+            $formData = $this->input->post();
+            $user = User::findOne(['login'=>$formData['login']]);
+            if($user and $this->service->auth->checkPassword($user, $formData['password'])){
+                $this->service->auth->login($user);
+                $this->service->redirect->go('chat');
+            }else{
+                $this->service->flash->add("Incorrect credentials", FlashMessage::DANGER);
+            }
+        }
 	}
 }

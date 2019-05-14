@@ -1,0 +1,30 @@
+{% from helpers.default import loading, topics, messages %}
+{{ loading() }}
+<div class="row justify-content-between pt-3 pb-3">
+	<div class="col-2 text-left">
+		<button class="btn btn-success btn-sm topic-add">
+			new topic
+		</button>
+	</div>
+	<div class="col-5 text-right">
+		logged as : <span class="text-warning">{{ user.getLogin }}</span>
+		<a href="/logout" class="btn btn-danger btn-sm">logout</a>
+	</div>
+</div>
+<div class="row flex-fill">
+	<div class="col-2 text-left">
+		{{ topics() }}
+	</div>
+	<div class="col d-flex flex-column">
+		{{ messages() }}
+		<div class="input-group mb-4">
+{#			<div class="input-group-prepend">#}
+{#				<button class="btn btn-info text-dark message-attach" type="button">upload 📤</button>#}
+{#			</div>#}
+			<textarea class="form-control bg-light message-value"></textarea>
+			<div class="input-group-append">
+				<button class="btn btn-warning text-dark message-send" type="button">send ↲</button>
+			</div>
+		</div>
+	</div>
+</div>

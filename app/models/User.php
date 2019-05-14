@@ -17,6 +17,7 @@ class User extends Model
 	const HASH_SALT = 'user';
 
 	const GUEST = "GUEST";
+	const MEMBER = "MEMBER";
 
 	/**
 	 * @param string $hashSalt
@@ -31,7 +32,31 @@ class User extends Model
 
 	public function toArray()
 	{
-		return [];
+		return [
+		    'id' => $this->hideId(self::HASH_SALT)->getId(),
+		    'login' => $this->getLogin(),
+        ];
 	}
+
+    /**
+     * @return string
+     */
+	public function getPassword() : string {
+	    return $this->password;
+    }
+
+    /**
+     * @return string
+     */
+	public function getLogin() : string {
+	    return $this->login;
+    }
+
+    /**
+     * @return string
+     */
+	public function getType() : string{
+	    return $this->type;
+    }
 
 }
