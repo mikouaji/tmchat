@@ -1,0 +1,17 @@
+{
+	"description": "ci-empty",
+	"name": "codeinit/ci-empty",
+	"type": "project",
+	"require": {
+		"php": ">=7.2",
+		"ext-json": "*",
+		"hashids/hashids": "^3.0",
+		"kenjis/codeigniter-ss-twig": "^0.3.0",
+		"matthiasmullie/minify": "^1.3",
+		"yidas/codeigniter-psr4-autoload": "^1.0",
+		"yidas/codeigniter-model": "^2.13"
+	},
+	"require-dev": {
+		"mikey179/vfsStream": "1.1.*"
+	}
+}

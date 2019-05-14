@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+{% from helpers.default import style as embedCSS, script as embedJS, flash as alerts %}
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Description">
+	<link rel="shortcut icon" href="/assets/img/favicon.ico" type="image/x-icon">
+	<title>Title</title>
+	{{ embedCSS(styles) }}
+</head>
+<body data-layout="default">
+{{ alerts(flashMessages) }}
+{{ include(page, data) }}
+{{ embedJS(scripts) }}
+</body>
+</html>

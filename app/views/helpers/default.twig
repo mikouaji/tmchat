@@ -1,0 +1,32 @@
+{% macro style(array)%}
+	{% for style in array.remote %}
+		<link rel="stylesheet" type="text/css" href="{{ style.url }}" crossorigin="{{ style.crossorigin }}" integrity="{{ style.integrity }}"/>
+	{% endfor %}
+	{% for style in array.local %}
+		<link rel="stylesheet" type="text/css" href="/{{ style.url }}" crossorigin="{{ style.crossorigin }}" integrity="{{ style.integrity }}"/>
+	{% endfor %}
+{% endmacro %}
+
+{% macro script(array)%}
+	{% for script in array.remote %}
+		<script type="text/javascript" async="{{ script.async }}" src="{{ script.url }}" crossorigin="{{ script.crossorigin }}" integrity="{{ script.integrity }}"></script>
+	{% endfor %}
+	{% for script in array.local %}
+		{% if array.requireJS%}
+			<script type="text/javascript" src="/{{ script.url }}" data-main="{{ script.main }}"></script>
+		{% else %}
+			<script type="text/javascript" async="{{ script.async }}" src="/{{ script.url }}" crossorigin="{{ script.crossorigin }}" integrity="{{ script.integrity }}"></script>
+		{% endif %}
+	{% endfor %}
+{% endmacro %}
+
+{% macro flash(array) %}
+	{% for alert in array %}
+		<div class="alert alert-{{ alert.type }} alert-dismissible fade show alert-on-top" role="alert">
+			{{ alert.message }}
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true"><i class="fas fa-times"></i></span>
+			</button>
+		</div>
+	{% endfor %}
+{% endmacro %}

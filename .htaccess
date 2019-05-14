@@ -1,0 +1,21 @@
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_URI} ^server.*
+RewriteRule ^(.*)$ /index.php?/$1 [L]
+RewriteCond %{REQUEST_URI} ^sessions.*
+RewriteRule ^(.*)$ /index.php?/$1 [L]
+RewriteCond %{REQUEST_URI} ^system.*
+RewriteRule ^(.*)$ /index.php?/$1 [L]
+RewriteCond %{REQUEST_URI} ^cache.*
+RewriteRule ^(.*)$ /index.php?/$1 [L]
+RewriteCond %{REQUEST_URI} ^language.*
+RewriteRule ^(.*)$ /index.php?/$1 [L]
+RewriteCond %{REQUEST_URI} ^logs.*
+RewriteRule ^(.*)$ /index.php?/$1 [L]
+RewriteCond %{REQUEST_URI} ^vendor.*
+RewriteRule ^(.*)$ /index.php?/$1 [L]
+RewriteCond %{REQUEST_URI} ^app.*
+RewriteRule ^(.*)$ /index.php?/$1 [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?/$1 [L]
