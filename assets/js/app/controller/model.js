@@ -8,6 +8,9 @@ define(['helper/request', 'controller/constants'], function(r,c){
         },
         add : function(name){
             return r.put(c.URL_PUT, {type: 'topic', name: name});
+        },
+        send : function(value, file){
+            return r.put(c.URL_PUT, {type: 'message', data: { value: value, file : file}});
         }
     };
 });

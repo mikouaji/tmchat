@@ -8,6 +8,8 @@ define(function(){
         DOM_TOPIC_ADD : '.topic-add',
         DOM_TOPIC_ADD_NAME : '.topic-add-name',
         DOM_MESSAGE_VALUE: '.message-value',
+        DOM_MESSAGE_SEND: '.message-send',
+        DOM_MESSAGE_ATTACH: '.message-attach',
         DOM_FLASH : '.flash',
         CSS_HIDDEN : 'd-none',
         URL_GET_ALL : 'api/get',

@@ -10,6 +10,7 @@
 use app\core\APP_Controller as Controller;
 use app\core\services\FlashMessage;
 use app\models\User;
+use app\libraries\SocketManager;
 
 class Home extends Controller
 {
@@ -25,10 +26,13 @@ class Home extends Controller
             $formData = $this->input->post();
             $user = User::findOne(['login'=>$formData['login']]);
             if($user and $this->service->auth->checkPassword($user, $formData['password'])){
-                $this->service->auth->login($user);
-                $this->service->redirect->go('chat');
+                if(SocketManager::start()){
+                    $this->service->auth->login($user);
+                    $this->service->redirect->go('chat');
+                }else
+                    $this->service->flash->add("service temporary unavailable", FlashMessage::INFO);
             }else{
-                $this->service->flash->add("Incorrect credentials", FlashMessage::DANGER);
+                $this->service->flash->add("incorrect credentials", FlashMessage::DANGER);
             }
         }
 	}

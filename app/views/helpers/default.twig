@@ -1,3 +1,8 @@
+{% macro socketConst(addr) %}
+	<script type="text/javascript">
+		const socketAddr = "{{ addr }}";
+	</script>
+{% endmacro %}
 {% macro loading() %}
 <div class="loader bg-secondary">
 	<div class="flex-fill pt-5 mt-5">
@@ -13,8 +18,16 @@
 	</div>
 {% endmacro %}
 {% macro topics() %}
+<div class="input-group">
+	<input type="text" class="form-control form-control-sm topic-add-name" placeholder="topic name" data-bind="textInpur: newTopic"/>
+	<div class="input-group-append">
+		<button class="btn btn-success btn-sm text-dark topic-add">
+			add
+		</button>
+	</div>
+</div>
 <small>filter:</small>
-<input type="text" class="form-control form-control-sm mb-1 topic-filter" data-bind="textInput: filter" />
+<input type="text" class="form-control form-control-sm mb-1 topic-filter" placeholder="search" data-bind="textInput: filter" />
 <ul class="topic-list">
 	<!-- ko foreach: filteredTopics -->
 	<li class="topic-select p-2" data-bind="attr: { 'data-id' : id}, class: active() ? 'bg-dark' : ''">
@@ -30,7 +43,7 @@
 	<ul class="topic-window p-2 bg-dark flex-fill" data-bind="attr: { 'data-id' : current }">
 		<!-- ko foreach: messages -->
 		<li class="p-2">
-			<span class="text-warning" data-bind="text: '@' + author()"></span>
+			<span class="text-warning" data-bind="text: author"></span>
 			<small class="text-light" data-bind="text: sent"></small>
 			:
 			<br />

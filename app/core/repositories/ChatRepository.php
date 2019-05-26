@@ -7,6 +7,7 @@ use app\models\Message;
 use app\models\Topic;
 use app\models\User;
 use app\models\Visit;
+use app\libraries\SocketManager;
 
 class ChatRepository extends Repository
 {
@@ -16,6 +17,29 @@ class ChatRepository extends Repository
     {
         $this->auth = $auth;
         $this->model = new Topic();
+    }
+
+    /**
+     * @param object $data
+     * @return bool
+     * @throws \Exception
+     */
+    public function sendMessage(object $data) : bool {
+        $user = $this->auth->getLoggedUser();
+        $topic = $user->getLastTopic();
+        $text = $data->value;
+        $file = $data->file;
+        $message = new Message();
+        $message->setUser($user)
+            ->setTopic($topic)
+            ->setValue($text)
+            ->save();
+        $this->updateVisitTime($topic->getRealId());
+        $response = [
+            'topic' => $topic->hideId(Topic::HASH_SALT)->getId(),
+            'message' => Message::findOne($message->getRealId())->toArray(),
+        ];
+        return SocketManager::message($response);
     }
 
     /**
@@ -64,7 +88,7 @@ class ChatRepository extends Repository
                     FROM topics t LEFT JOIN topic_visits v 
                     ON t.id = v.topic 
                     WHERE user = 1 
-                    ORDER BY v.date DESC, t.id ASC");
+                    ORDER BY v.date DESC, t.id DESC");
         foreach($query->result('app\models\Topic') as $topic){
             $topic->hideId(Topic::HASH_SALT);
             $active = $topic->getRealId() === $user->getLastTopic()->getId();

@@ -10,8 +10,10 @@ define(
 			filter: "",
 			newTopic: "",
 		});
+
 		m.getAll().then(function(response){
 			updateView(response.data.obj);
+			initSocketIO();
 			$(c.DOM_LOADER).addClass(c.CSS_HIDDEN);
 		}).catch(function(error){
 			showErrors(error.response.data.messages);
@@ -34,6 +36,8 @@ define(
 			addTopic();
 		}).on('click', c.DOM_FLASH, function(){
 			$(this).remove();
+		}).on('click', c.DOM_MESSAGE_SEND, function(){
+			sendMessage();
 		}).on('keypress', function(e){
 			if(e.keyCode === c.KEYCODE_ENTER){
 				let target = e.target;
@@ -41,11 +45,50 @@ define(
 					addTopic();
 				}
 				if(target === $(c.DOM_MESSAGE_VALUE)[0] && e.shiftKey === false){
-					console.log(e);
-					console.log("send message");
+					sendMessage();
 				}
 			}
 		});
+
+		function initSocketIO(){
+			const socket = io(socketAddr);
+			socket.on('message', function(message){
+				let data = JSON.parse(message);
+				if(data.topic === v.get('current')){
+					let messages = v.get('messages');
+					messages.push(data.message);
+					v.set('messages', messages);
+				}else{
+					let topics = v.get('topics');
+					topics.forEach(function(item){
+						if(item.id === data.topic)
+							item.unread ++ ;
+					});
+					let filteredTopics = v.get('topics');
+					filteredTopics.forEach(function(item){
+						if(item.id === data.topic)
+							item.unread ++ ;
+					});
+					v.set('topics', topics)
+						.set('filteredTopics', filteredTopics);
+				}
+			});
+		}
+
+		function sendMessage(){
+			$(c.DOM_MESSAGE_VALUE).prop('disabled', true);
+			let value = $(c.DOM_MESSAGE_VALUE).val();
+			let file = "";
+			m.send(value, file).then(function(response){
+				if(response.data.obj === true){
+					$(c.DOM_MESSAGE_VALUE).val("");
+					$(c.DOM_MESSAGE_VALUE).removeAttr('disabled');
+					$(c.DOM_MESSAGE_VALUE).focus();
+				}
+			}).catch(function(error){
+				showErrors(error.response.data.messages);
+			});
+		}
 
 		function addTopic(){
 			let name = $(c.DOM_TOPIC_ADD_NAME).val();
@@ -100,19 +143,4 @@ define(
 				}, c.FLASH_TIMEOUT);
 			});
 		}
-
-		// testy socket
-		// var textbox = $('.in');
-		// var socket = io("http://localhost:54333");
-		// $('button.send').on('click', function(){
-		// 	var text = $('input.mssg').val();
-		// 	console.log(text);
-		// 	socket.emit("message", text);
-		// 	$('input.mssg').val("");
-		// });
-		//
-		// socket.on('message', (text) => {
-		// 	textbox.append("<p>"+text+"</p>");
-		// });
-
 	});

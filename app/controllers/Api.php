@@ -58,7 +58,14 @@ class Api extends Controller
                 $responseData['obj'] = $data->name;
                 $responseData['messages'] = [$this->form_validation->error_string()];
             }
-
+        if($data->type === self::PUT_MESSAGE){
+            $this->repository->sendMessage($data->data);
+            $responseData =[
+                'obj' => TRUE,
+                'messages' => ['ok']
+            ];
+            $responseCode = 200;
+        }
         $this->view->setJsonResponse($responseData, $responseCode);
     }
 }
