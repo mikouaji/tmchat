@@ -11,8 +11,13 @@ requirejs.config({
 		knockout : "knockout-3.5.0",
 		komapping : "knockout.mapping-latest",
 		socketio : "socket.io",
+		linkifyBase : "linkify.min",
+		linkify : "linkify-jquery.min",
 	},
 	shim: {
+		linkify:{
+			deps: ['linkifyBase'],
+		},
 		bootstrap: {
 			deps: ['jquery'],
 		},

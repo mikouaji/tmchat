@@ -6,6 +6,8 @@ use app\models\Topic;
 
 class Api extends Controller
 {
+    const GET_FILES = "files";
+
     const PUT_TOPIC = 'topic';
     const PUT_MESSAGE = 'message';
 
@@ -16,7 +18,7 @@ class Api extends Controller
     }
 
     public function get($id = null){
-        if(!is_null($id)) {
+        if(!is_null($id) and $id !== self::GET_FILES) {
             $user = $this->service->auth->getLoggedUser();
 
             if(!is_null($user->getLastTopic()))
@@ -28,7 +30,11 @@ class Api extends Controller
                 $user->setLastTopic(Topic::findOne($topicId))->save();
             }
         }
-        $data = $this->repository->getTopicsWithCurrentAndUnread();
+
+        if($id === self::GET_FILES){
+            $data = $this->repository->getFiles();
+        }else
+            $data = $this->repository->getTopicsWithCurrentAndUnread();
         $responseData =[
             'obj' => $data,
             'messages' => ['ok']

@@ -24,26 +24,27 @@ class Message extends Model
 
     public function toArray()
     {
+        $files = $this->getFiles();
+        foreach($files as &$file)
+            $file = $file->toArray(FALSE);
         return [
             'id'=> $this->hideId(self::HASH_SALT)->getId(),
             'value'=>$this->getValue(),
             'sent'=>$this->getSentDate(),
             'author'=>$this->getUser()->getLogin(),
-            'file'=> is_null($this->getFile()) ? NULL : $this->getFile()->toArray(FALSE),
+            'files'=> $files,
         ];
     }
 
     /**
-     * @return File|NULL
+     * @return array
      */
-    public function getFile() {
-        if(!is_null($this->file))
-            return File::findOne($this->file);
-        return NULL;
+    public function getFiles() {
+        return $this->files;
     }
 
-    public function file(){
-        return $this->hasOne("app\models\File", 'message', 'id');
+    public function files(){
+        return $this->hasMany("app\models\File", 'message', 'id');
     }
 
     /**

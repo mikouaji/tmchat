@@ -7,6 +7,7 @@ use app\models\Message;
 use app\models\Topic;
 use app\models\User;
 use app\models\Visit;
+use app\models\File;
 use app\libraries\SocketManager;
 
 class ChatRepository extends Repository
@@ -28,18 +29,70 @@ class ChatRepository extends Repository
         $user = $this->auth->getLoggedUser();
         $topic = $user->getLastTopic();
         $text = $data->value;
-        $file = $data->file;
+        $files = $data->files;
         $message = new Message();
         $message->setUser($user)
             ->setTopic($topic)
             ->setValue($text)
             ->save();
         $this->updateVisitTime($topic->getRealId());
+        foreach($files as $file){
+            $this->addFile($file, $message);
+        }
         $response = [
             'topic' => $topic->hideId(Topic::HASH_SALT)->getId(),
             'message' => Message::findOne($message->getRealId())->toArray(),
         ];
         return SocketManager::message($response);
+    }
+
+    /**
+     * @return array
+     * @throws \Exception
+     */
+    public function getFiles() : array{
+        $output = [
+            File::TYPE_URL => [],
+            File::TYPE_IMG => [],
+            File::TYPE_DOC => [],
+        ];
+        $files = File::findAll();
+        foreach($files as $file){
+            $output[$file->getType()][] = $file->toArray();
+        }
+        return $output;
+    }
+
+    /**
+     * @param object $file
+     * @param Message $message
+     */
+    public function addFile($file, Message $message){
+        switch(strtoupper($file->type)){
+            case File::TYPE_URL: $this->addUrl($file->value, $file->href, $message); break;
+        }
+    }
+
+    /**
+     * @param string $label
+     * @param string $url
+     * @param Message $message
+     */
+    private function addUrl(string $label, string $url, Message $message){
+        $file = new File();
+        $file->setMessage($message)
+            ->setLabel($label)
+            ->setPath($url)
+            ->setType(File::TYPE_URL)
+            ->save();
+    }
+
+    private function addDoc(){
+
+    }
+
+    private function addImg(){
+
     }
 
     /**

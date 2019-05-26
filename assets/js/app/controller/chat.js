@@ -1,11 +1,12 @@
 define(
-	['require', 'jquery', 'controller/constants', 'helper/viewModel', 'controller/model', 'socketio'],
+	['require', 'jquery', 'controller/constants', 'helper/viewModel', 'controller/model', 'socketio', 'linkify'],
 	function(require, $, c, v, m, io)
 	{
 		v.init({
 			filteredTopics: [],
 			topics : [],
 			messages : [],
+			files: {URL:[],IMG:[],DOC:[]},
 			current : "",
 			filter: "",
 			newTopic: "",
@@ -14,6 +15,7 @@ define(
 		m.getAll().then(function(response){
 			updateView(response.data.obj);
 			initSocketIO();
+			getFiles();
 			$(c.DOM_LOADER).addClass(c.CSS_HIDDEN);
 			scrollMessagesToBottom();
 		}).catch(function(error){
@@ -33,8 +35,22 @@ define(
 			}).catch(function(error){
 				showErrors(error.response.data.messages);
 			});
+		}).on('click', c.DOM_FILES_TOGGLE, function(){
+			$(c.DOM_FILES_COL).toggleClass(c.CSS_HIDDEN);
 		}).on('click', c.DOM_TOPIC_ADD, function(){
 			addTopic();
+		}).on('click', c.DOM_FILES_SHOW_URLS, function(){
+			$(c.DOM_FILES_LIST_URLS).removeClass(c.CSS_HIDDEN);
+			$(c.DOM_FILES_LIST_IMGS).addClass(c.CSS_HIDDEN);
+			$(c.DOM_FILES_LIST_DOCS).addClass(c.CSS_HIDDEN);
+		}).on('click', c.DOM_FILES_SHOW_IMGS, function(){
+			$(c.DOM_FILES_LIST_URLS).addClass(c.CSS_HIDDEN);
+			$(c.DOM_FILES_LIST_IMGS).removeClass(c.CSS_HIDDEN);
+			$(c.DOM_FILES_LIST_DOCS).addClass(c.CSS_HIDDEN);
+		}).on('click', c.DOM_FILES_SHOW_DOCS, function(){
+			$(c.DOM_FILES_LIST_URLS).addClass(c.CSS_HIDDEN);
+			$(c.DOM_FILES_LIST_IMGS).addClass(c.CSS_HIDDEN);
+			$(c.DOM_FILES_LIST_DOCS).removeClass(c.CSS_HIDDEN);
 		}).on('click', c.DOM_FLASH, function(){
 			$(this).remove();
 		}).on('click', c.DOM_MESSAGE_SEND, function(){
@@ -51,8 +67,21 @@ define(
 			}
 		});
 
+		function getFiles(){
+			m.getFiles().then(function(response){
+				console.log(response.data.obj);
+				v.set('files', response.data.obj);
+				console.log(v.get('files'));
+			}).catch(function(error){
+				showErrors(error.response.data.messages);
+			});
+		}
+
 		function scrollMessagesToBottom(){
 			$(c.DOM_TOPIC_WINDOW).scrollTop($(c.DOM_TOPIC_WINDOW).prop("scrollHeight"));
+			$(c.DOM_TOPIC_WINDOW).linkify({
+				target: "_blank"
+			});
 		}
 
 		function initSocketIO(){
@@ -84,8 +113,12 @@ define(
 		function sendMessage(){
 			$(c.DOM_MESSAGE_VALUE).prop('disabled', true);
 			let value = $(c.DOM_MESSAGE_VALUE).val();
-			let file = "";
-			m.send(value, file).then(function(response){
+			let files = [];
+			linkify.find(value).forEach(function(url){
+				if(url.type === "url")
+					files.push(url);
+			});
+			m.send(value, files).then(function(response){
 				if(response.data.obj === true){
 					$(c.DOM_MESSAGE_VALUE).val("");
 					$(c.DOM_MESSAGE_VALUE).removeAttr('disabled');

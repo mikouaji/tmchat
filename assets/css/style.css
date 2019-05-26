@@ -52,17 +52,16 @@ ul.topic-window{
     max-height: 75vh;
     scrollbar-color: #abb6c2 #2b3e50;
 }
+div.files-col ul::-webkit-scrollbar,
 ul.topic-window::-webkit-scrollbar{
     background: #2b3e50;
 }
+div.files-col ul::-webkit-scrollbar-thumb,
 ul.topic-window::-webkit-scrollbar-thumb{
     background: #abb6c2;
 }
-ul.topic-window li{
-    border-bottom: solid 1px #2b3e50;
-}
 ul.topic-window li:nth-of-type(2n){
-    background-color: #465464;
+    background-color: #566778;
 }
 ul.topic-window li span.topic-message{
     white-space: pre-wrap;
@@ -81,4 +80,27 @@ textarea.message-value[disabled]{
 }
 div.message-bar{
     border-top: 5px solid #2b3e50;
+}
+div.files-col ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 75vh;
+    scrollbar-color: #abb6c2 #2b3e50;
+}
+div.files-col li{
+    margin: 5px 0;
+    padding: 3px;
+}
+div.files-col li:nth-of-type(2n){
+    background-color: #32475C;
+}
+div.files-col li small{
+    font-size: 9px;
+}
+select{
+    color: #ffffff !important;
+    background-color: #2b3e50 !important;
 }

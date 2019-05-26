@@ -1,4 +1,4 @@
-{% from helpers.default import loading, topics, messages, messagesLoading, socketConst %}
+{% from helpers.default import loading, topics, messages, messagesLoading, socketConst, files, filesModal %}
 {{ loading() }}
 <div class="row justify-content-between pt-3 pb-3">
 	<div class="col-2">
@@ -9,6 +9,8 @@
 	</div>
 	<div class="col-10 text-right">
 		logged in as <span class="text-warning">{{ user.getLogin }}</span>
+		<button class="btn btn-info btn-sm files-toggle">🗁 files</button>
+		<a href="/chat" class="btn btn-warning text-decoration-none text-dark btn-sm">settings</a>
 		<a href="/logout" class="btn btn-danger btn-sm text-white text-decoration-none">logout</a>
 	</div>
 </div>
@@ -16,12 +18,12 @@
 	<div class="col-2 text-left">
 		{{ topics() }}
 	</div>
-	<div class="col d-flex flex-column">
+	<div class="col d-flex flex-column p-0">
 		{{ messagesLoading() }}
 		{{ messages() }}
 		<div class="input-group mb-4 message-bar">
 			<div class="input-group-prepend">
-				<button class="btn btn-info text-dark message-attach" type="button">upload 📤</button>
+				<button class="btn btn-info text-dark" type="button" data-toggle="modal" data-target="#filesModal">upload 📤</button>
 			</div>
 			<textarea class="form-control bg-light message-value border-0"></textarea>
 			<div class="input-group-append">
@@ -29,5 +31,9 @@
 			</div>
 		</div>
 	</div>
+	<div class="col-2 files-col d-none p-0">
+		{{ files() }}
+	</div>
 </div>
 {{ socketConst(socketAddr) }}
+{{ filesModal() }}

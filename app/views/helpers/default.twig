@@ -52,6 +52,60 @@
 		<!-- /ko -->
 	</ul>
 {% endmacro %}
+{% macro files() %}
+	<div class="text-center">
+		<button class="btn btn-sm btn-info files-show-urls">urls</button>
+		<button class="btn btn-sm btn-success files-show-imgs">imgs</button>
+		<button class="btn btn-sm btn-secondary files-show-docs">docs</button>
+	</div>
+	<ul class="files-list-urls">
+		<!-- ko foreach: files.URL -->
+			<li>
+				<a data-bind="attr: { href : path }" target="_blank" class="text-decoration-none">
+					<span data-bind="text: label"></span><br />
+					<small data-bind="text: created"></small>
+				</a>
+			</li>
+		<!-- /ko -->
+	</ul>
+	<ul class="files-list-imgs d-none">
+		im
+		<!-- ko foreach: files.IMG -->
+		<!-- /ko -->
+	</ul>
+	<ul class="files-list-docs d-none">
+		do
+		<!-- ko foreach: files.DOC -->
+		<!-- /ko -->
+	</ul>
+{% endmacro %}
+
+{% macro filesModal() %}
+<div class="modal fade" id="filesModal" tabindex="-1" role="dialog" aria-labelledby="filesModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h6 class="modal-title" id="filesModalLabel">upload file</h6>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body files-form">
+				<select class="form-control form-control-sm">
+					<option value="IMG">image</option>
+					<option value="DOC">document</option>
+				</select>
+				<input type="file" />
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">cancel</button>
+				<button type="button" class="btn btn-success message-attach btn-sm">upload</button>
+			</div>
+		</div>
+	</div>
+</div>
+{% endmacro %}
+
 {% macro style(array)%}
 	{% for style in array.remote %}
 		<link rel="stylesheet" type="text/css" href="{{ style.url }}" crossorigin="{{ style.crossorigin }}" integrity="{{ style.integrity }}"/>

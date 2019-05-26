@@ -40,8 +40,16 @@ class File extends Model
         return $array;
     }
 
+    public function setMessage(Message $message) : File{
+        $this->message = $message->getRealId();
+        return $this;
+    }
+
+    /**
+     * @return Message
+     */
     public function getMessage() : Message {
-        return $this->message;
+        return Message::findOne($this->message);
     }
 
     public function message(){
