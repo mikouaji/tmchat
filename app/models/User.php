@@ -18,6 +18,7 @@ class User extends Model
 
 	const GUEST = "GUEST";
 	const MEMBER = "MEMBER";
+	const ADMIN = "ADMIN";
 
 	/**
 	 * @param string $hashSalt

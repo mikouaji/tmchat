@@ -48,12 +48,24 @@ ul.topic-list li{
 }
 ul.topic-window{
     vertical-align: bottom;
+    overflow-y: scroll;
+    max-height: 75vh;
+    scrollbar-color: #abb6c2 #2b3e50;
+}
+ul.topic-window::-webkit-scrollbar{
+    background: #2b3e50;
+}
+ul.topic-window::-webkit-scrollbar-thumb{
+    background: #abb6c2;
 }
 ul.topic-window li{
     border-bottom: solid 1px #2b3e50;
 }
-ul.topic-window li:nth-of-type(2){
+ul.topic-window li:nth-of-type(2n){
     background-color: #465464;
+}
+ul.topic-window li span.topic-message{
+    white-space: pre-wrap;
 }
 div.flash{
     z-index: 20;

@@ -25,22 +25,22 @@ $config['acl'] = [
 		],
         'chat'=>[
             'index'=>[
-                'allow'=>['MEMBER'],
+                'allow'=>['MEMBER', 'ADMIN'],
             ],
             'upload'=>[
-                'allow'=>['MEMBER'],
+                'allow'=>['MEMBER', 'ADMIN'],
             ],
             'logout'=>[
-                'allow'=>['MEMBER'],
+                'allow'=>['MEMBER', 'ADMIN'],
             ],
         ],
         'api'=>[
             'get'=>[
-                'allow'=>['MEMBER'],
+                'allow'=>['MEMBER', 'ADMIN'],
                 'redirect'=>'api/error'
             ],
             'put'=>[
-                'allow'=>['MEMBER'],
+                'allow'=>['MEMBER', 'ADMIN'],
                 'redirect'=>'api/error'
             ],
         ]

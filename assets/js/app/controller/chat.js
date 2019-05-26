@@ -15,6 +15,7 @@ define(
 			updateView(response.data.obj);
 			initSocketIO();
 			$(c.DOM_LOADER).addClass(c.CSS_HIDDEN);
+			scrollMessagesToBottom();
 		}).catch(function(error){
 			showErrors(error.response.data.messages);
 		});
@@ -50,6 +51,10 @@ define(
 			}
 		});
 
+		function scrollMessagesToBottom(){
+			$(c.DOM_TOPIC_WINDOW).scrollTop($(c.DOM_TOPIC_WINDOW).prop("scrollHeight"));
+		}
+
 		function initSocketIO(){
 			const socket = io(socketAddr);
 			socket.on('message', function(message){
@@ -58,6 +63,7 @@ define(
 					let messages = v.get('messages');
 					messages.push(data.message);
 					v.set('messages', messages);
+					scrollMessagesToBottom();
 				}else{
 					let topics = v.get('topics');
 					topics.forEach(function(item){
