@@ -11,6 +11,8 @@ class Topic extends Model
 
     const HASH_SALT = 'topic';
 
+    const MAIN = "general";
+
     /**
      * @param string $hashSalt
      * @return Model
@@ -27,7 +29,6 @@ class Topic extends Model
         $array = [
             'id' => $this->hideId(self::HASH_SALT)->getId(),
             'name' => $this->getName(),
-            'lastMessage' => $this->getLastMessageDate(),
         ];
         if($full){
             $temp = $this->getMessages();
@@ -47,22 +48,6 @@ class Topic extends Model
 
     public function messages(){
         return $this->hasMany("app\models\Message", "topic" , "id");
-    }
-
-    /**
-     * @param string $date
-     * @return Topic
-     */
-    public function setLastMessageDate(string $date) : Topic {
-        $this->last_message = $date;
-        return $this;
-    }
-
-    /**
-     * @return string|NULL
-     */
-    public function getLastMessageDate() {
-        return $this->last_message;
     }
 
     /**

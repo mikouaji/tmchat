@@ -39,6 +39,22 @@ class User extends Model
 	}
 
     /**
+     * @param Topic $topic
+     * @return User
+     */
+	public function setLastTopic(Topic $topic) : User {
+	    $this->last_topic = $topic->getRealId();
+	    return $this;
+    }
+
+    /**
+     * @return Topic|NULL
+     */
+    public function getLastTopic(){
+	    return Topic::findOne($this->last_topic);
+    }
+
+    /**
      * @return string
      */
 	public function getPassword() : string {

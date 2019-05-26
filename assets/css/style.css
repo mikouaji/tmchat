@@ -9,11 +9,29 @@ body{
     height: 100%;
     z-index: 100;
 }
+input.form-control.form-control-sm{
+    background-color: #2b3e50;
+    border: none;
+    border-bottom: 3px solid #abb6c2;
+    border-left: 3px solid #abb6c2;
+    color: #ffffff;
+}
 ul.topic-window,
 ul.topic-list{
     margin: 0;
     padding: 0;
     list-style: none;
+}
+ul.topic-list li.topic-select:before{
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url(/assets/img/hash.svg);
+    background-repeat: no-repeat;
+    position: relative;
+    top: 5px;
+    margin-right: -7px;
 }
 ul.topic-list li{
     cursor: pointer;
@@ -26,4 +44,12 @@ ul.topic-window li{
 }
 ul.topic-window li:nth-of-type(2){
     background-color: #465464;
+}
+div.flash{
+    z-index: 20;
+    position: absolute;
+    bottom: 20px;
+    left: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
 }

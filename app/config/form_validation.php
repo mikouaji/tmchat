@@ -6,15 +6,15 @@
  * Time: 12:11 PM
  */
 $config = [
-	'error_prefix'=>'<div class="small text-danger">',
-	'error_suffix'=>'</div>',
+	'error_prefix'=>'<small class="bg-danger p-1">',
+	'error_suffix'=>'</small>',
     'login' => [
         [
             'field' => 'login',
             'label' => 'login',
             'rules' => 'trim|required',
             'errors' => [
-                'required'=>'Field required.',
+                'required'=>'field required',
             ],
         ],
         [
@@ -22,7 +22,18 @@ $config = [
             'label' => 'password',
             'rules' => 'trim|required',
             'errors' => [
-                'required'=>'Field required.'
+                'required'=>'field required'
+            ],
+        ],
+    ],
+    'addTopic' => [
+        [
+            'field' => 'name',
+            'label' => 'name',
+            'rules' => 'trim|required|uniqueTopicName',
+            'errors' => [
+                'required'=>'field required',
+                'uniqueTopicName'=>'this topic already exists',
             ],
         ],
     ],

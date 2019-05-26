@@ -23,6 +23,7 @@ define(['knockout', 'komapping'], function(ko, km){
 			return index === null ? obj : obj[index];
 		},
 		set : function(name, value){
+			obj = ko.mapping.toJS(model);
 			obj[name] = value;
 			this.update(obj);
 			return this;
