@@ -10,6 +10,7 @@ requirejs.config({
 		bootstrap: "bootstrap.bundle.min",
 		knockout : "knockout-3.5.0",
 		komapping : "knockout.mapping-latest",
+		socketio : "socket.io",
 	},
 	shim: {
 		bootstrap: {

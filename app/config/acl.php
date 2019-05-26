@@ -27,12 +27,19 @@ $config['acl'] = [
             'index'=>[
                 'allow'=>['MEMBER'],
             ],
+            'upload'=>[
+                'allow'=>['MEMBER'],
+            ],
             'logout'=>[
                 'allow'=>['MEMBER'],
             ],
         ],
         'api'=>[
             'get'=>[
+                'allow'=>['MEMBER'],
+                'redirect'=>'api/error'
+            ],
+            'put'=>[
                 'allow'=>['MEMBER'],
                 'redirect'=>'api/error'
             ],
