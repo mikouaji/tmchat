@@ -36,7 +36,7 @@ class File extends Model
             'label' => $this->getLabel(),
         ];
         if($full)
-            $array['message'] =$this->getMessage()->hideId(Message::HASH_SALT)->getId();
+            $array['message'] = is_null($this->getMessage()) ? NULL : $this->getMessage()->hideId(Message::HASH_SALT)->getId();
         return $array;
     }
 
@@ -46,10 +46,10 @@ class File extends Model
     }
 
     /**
-     * @return Message
+     * @return Message|NULL
      */
-    public function getMessage() : Message {
-        return Message::findOne($this->message);
+    public function getMessage() {
+        return is_null($this->message) ? NULL : Message::findOne($this->message);
     }
 
     public function message(){
