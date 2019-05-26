@@ -1,19 +1,15 @@
-{% from helpers.default import loading, topics, messages, messagesLoading %}
+{% from helpers.default import loading, topics, messages, messagesLoading, socketConst %}
 {{ loading() }}
 <div class="row justify-content-between pt-3 pb-3">
-	<div class="col-2 text-left">
-		<div class="input-group">
-			<input type="text" class="form-control form-control-sm topic-add-name" data-bind="textInpur: newTopic"/>
-			<div class="input-group-append">
-				<button class="btn btn-success btn-sm topic-add">
-					new topic
-				</button>
-			</div>
-		</div>
+	<div class="col-2">
+		<a href="/chat" class="text-decoration-none">
+			<img src="/assets/img/logo.svg" />
+			chat app
+		</a>
 	</div>
-	<div class="col-5 text-right">
-		logged as : <span class="text-warning">{{ user.getLogin }}</span>
-		<a href="/logout" class="btn btn-danger btn-sm">logout</a>
+	<div class="col-10 text-right">
+		logged in as <span class="text-warning">{{ user.getLogin }}</span>
+		<a href="/logout" class="btn btn-danger btn-sm text-white text-decoration-none">logout</a>
 	</div>
 </div>
 <div class="row flex-fill">
@@ -23,14 +19,15 @@
 	<div class="col d-flex flex-column">
 		{{ messagesLoading() }}
 		{{ messages() }}
-		<div class="input-group mb-4">
+		<div class="input-group mb-4 message-bar">
 			<div class="input-group-prepend">
 				<button class="btn btn-info text-dark message-attach" type="button">upload 📤</button>
 			</div>
-			<textarea class="form-control bg-light message-value"></textarea>
+			<textarea class="form-control bg-light message-value border-0"></textarea>
 			<div class="input-group-append">
 				<button class="btn btn-warning text-dark message-send" type="button">send ↲</button>
 			</div>
 		</div>
 	</div>
 </div>
+{{ socketConst(socketAddr) }}

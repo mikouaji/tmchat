@@ -18,7 +18,6 @@ use app\core\services\Auth;
 use app\core\services\FlashMessage;
 use app\core\services\Redirect;
 use app\core\services\Hash;
-use app\core\services\Mail;
 
 class APP_Controller extends \CI_Controller
 {
@@ -42,8 +41,7 @@ class APP_Controller extends \CI_Controller
 		$this->service = new ServiceProvider();
 		$this->service->add(new Hash(),'hash')->add(new Auth($this->session, $this->service->hash), 'auth')
 			->add(new FlashMessage($this->session),'flash')
-			->add(new Redirect(), 'redirect')
-			->add(new Mail($this->email), 'mail');
+			->add(new Redirect(), 'redirect');
 
 		$this->acl = new ACL();
 		$this->_checkAccess();

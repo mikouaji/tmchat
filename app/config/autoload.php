@@ -61,7 +61,6 @@ $autoload['packages'] = array();
 $autoload['libraries'] = array(
 	'database',
 	'session',
-	'email',
 	'form_validation',
 	'app_form_validation',
 );
@@ -109,7 +108,7 @@ $autoload['helper'] = array('form','url');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array('view','hashids','assets','twig','acl','email');
+$autoload['config'] = array('view','hashids','assets','twig','acl','socket');
 
 /*
 | -------------------------------------------------------------------

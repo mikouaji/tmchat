@@ -1,6 +1,15 @@
 body{
     font-family: 'Cutive Mono', monospace;
 }
+a,
+a:visited,
+a:active{
+    text-decoration: underline;
+    color: #abb6c2;
+}
+a:hover{
+    color: #ffffff;
+}
 .loader{
     position: absolute;
     top:0;
@@ -35,6 +44,7 @@ ul.topic-list li.topic-select:before{
 }
 ul.topic-list li{
     cursor: pointer;
+    word-break: break-all;
 }
 ul.topic-window{
     vertical-align: bottom;
@@ -52,4 +62,11 @@ div.flash{
     left: 10px;
     padding: 10px 20px;
     cursor: pointer;
+}
+textarea.message-value[disabled]{
+    color: #2b3e50;
+    background-color: #4e5d6c!important;
+}
+div.message-bar{
+    border-top: 5px solid #2b3e50;
 }
