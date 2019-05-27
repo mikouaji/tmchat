@@ -24,6 +24,7 @@ define(
 
 		$('body').on('keyup', c.DOM_TOPIC_FILTER, function(){
 			v.set('filteredTopics', v.get('topics').filter(item => (item.name.search(v.get('filter')) !== -1 || item.active)));
+			linkifyChat();
 		}).on('click', c.DOM_TOPIC_SELECT, function(){
 			$(c.DOM_TOPIC_WINDOW).addClass(c.CSS_HIDDEN);
 			$(c.DOM_LOADER_MESSAGES).removeClass(c.CSS_HIDDEN);
@@ -69,9 +70,8 @@ define(
 
 		function getFiles(){
 			m.getFiles().then(function(response){
-				console.log(response.data.obj);
 				v.set('files', response.data.obj);
-				console.log(v.get('files'));
+				linkifyChat();
 			}).catch(function(error){
 				showErrors(error.response.data.messages);
 			});
@@ -79,6 +79,9 @@ define(
 
 		function scrollMessagesToBottom(){
 			$(c.DOM_TOPIC_WINDOW).scrollTop($(c.DOM_TOPIC_WINDOW).prop("scrollHeight"));
+		}
+
+		function linkifyChat(){
 			$(c.DOM_TOPIC_WINDOW).linkify({
 				target: "_blank"
 			});
@@ -107,6 +110,7 @@ define(
 					v.set('topics', topics)
 						.set('filteredTopics', filteredTopics);
 				}
+				linkifyChat();
 			});
 		}
 
@@ -143,6 +147,7 @@ define(
 					topics.splice(1,0,topic);
 					v.set('topics', topics)
 						.set('filteredTopics', topics);
+					linkifyChat();
 				}).catch(function(error){
 					showErrors(error.response.data.messages);
 				});
@@ -172,6 +177,7 @@ define(
 				.set('filteredTopics', topics)
 				.set('messages', messages)
 				.set('filter', '');
+			linkifyChat();
 		}
 
 		function showErrors(messages){

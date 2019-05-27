@@ -95,7 +95,7 @@ class APP_Controller extends \CI_Controller
 	{
 		$access = $this->acl->isAllowed($this->service->auth->getType(),$this->controller, $this->action);
 		if(!$access['allowed']) {
-			$this->service->flash->add('Access denied.', FlashMessage::INFO);
+			$this->service->flash->add('access denied', FlashMessage::INFO);
 			$this->service->redirect->go($access['redirect']);
 		}
 	}
