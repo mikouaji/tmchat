@@ -55,7 +55,14 @@ class Api extends Controller
         $responseCode = 400;
         $data = json_decode($this->input->raw_input_stream);
         $this->form_validation->set_data((array)$data);
-        if($data->type === self::PUT_TOPIC)
+        if($data->type === self::PUT_MESSAGE){
+            $this->repository->sendMessage($data->data);
+            $responseData =[
+                'obj' => TRUE,
+                'messages' => ['ok']
+            ];
+            $responseCode = 200;
+        }elseif($data->type === self::PUT_TOPIC)
             if($this->form_validation->run("addTopic") !== FALSE){
                 $data = $this->repository->addTopic($data->name);
                 $data = $data->toArray();
@@ -68,14 +75,6 @@ class Api extends Controller
                 $responseData['obj'] = $data->name;
                 $responseData['messages'] = [$this->form_validation->error_string()];
             }
-        if($data->type === self::PUT_MESSAGE){
-            $this->repository->sendMessage($data->data);
-            $responseData =[
-                'obj' => TRUE,
-                'messages' => ['ok']
-            ];
-            $responseCode = 200;
-        }
         $this->view->setJsonResponse($responseData, $responseCode);
     }
 }
