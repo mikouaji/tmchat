@@ -81,7 +81,7 @@ class ChatRepository extends Repository
     }
 
     /**
-     * @param object $file
+     * @param $file
      * @param Message $message
      */
     public function addFileToMessage($file, Message $message){
