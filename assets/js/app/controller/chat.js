@@ -1,18 +1,21 @@
 define(
-	['require', 'jquery', 'controller/constants', 'helper/viewModel', 'controller/model', 'socketio', 'linkify'],
-	function(require, $, c, v, m, io)
+	['require', 'jquery', 'controller/constants', 'helper/viewModel', 'controller/model', 'socketio', 'helper/fileUpload', 'linkify'],
+	function(require, $, c, v, m, io, f)
 	{
 		v.init({
+			csrf: {},
 			filteredTopics: [],
 			topics : [],
 			messages : [],
 			files: {URL:[],IMG:[],DOC:[]},
+			uploadedFiles: [],
 			current : "",
 			filter: "",
 			newTopic: "",
 		});
 
 		m.getAll().then(function(response){
+			v.set('csrf', response.data.csrf);
 			updateView(response.data.obj);
 			initSocketIO();
 			getFiles();
@@ -33,6 +36,24 @@ define(
 				updateView(response.data.obj);
 				$(c.DOM_LOADER_MESSAGES).addClass(c.CSS_HIDDEN);
 				$(c.DOM_TOPIC_WINDOW).removeClass(c.CSS_HIDDEN);
+				scrollMessagesToBottom();
+			}).catch(function(error){
+				showErrors(error.response.data.messages);
+			});
+		}).on('submit', c.DOM_FILES_FORM, function(e){
+			e.preventDefault();
+			let data = new FormData();
+			let csrf = v.get('csrf');
+			data.append(csrf.name, csrf.hash);
+			data.append('type', $(c.DOM_MESSAGE_ATTACHMENT_TYPE).val());
+			data.append('label', $(c.DOM_MESSAGE_ATTACHMENT_LABEL).val());
+			data.append('files', $(c.DOM_MESSAGE_ATTACHMENT).prop('files')[0]);
+			f.upload(data).then(function(response){
+				let uf = v.get('uploadedFiles');
+				uf.push(response.data.obj);
+				v.set('uploadedFiles',uf);
+				$(c.DOM_MESSAGE_ATTACHMENT_LABEL).val("");
+				linkifyChat();
 			}).catch(function(error){
 				showErrors(error.response.data.messages);
 			});
@@ -91,6 +112,11 @@ define(
 			const socket = io(socketAddr);
 			socket.on('message', function(message){
 				let data = JSON.parse(message);
+				let files = v.get('files');
+				data.message.files.forEach(function(item){
+					files[item.type].push(item);
+				});
+				v.set('files', files);
 				if(data.topic === v.get('current')){
 					let messages = v.get('messages');
 					messages.push(data.message);
@@ -117,7 +143,7 @@ define(
 		function sendMessage(){
 			$(c.DOM_MESSAGE_VALUE).prop('disabled', true);
 			let value = $(c.DOM_MESSAGE_VALUE).val();
-			let files = [];
+			let files = v.get('uploadedFiles');
 			linkify.find(value).forEach(function(url){
 				if(url.type === "url")
 					files.push(url);
@@ -127,6 +153,8 @@ define(
 					$(c.DOM_MESSAGE_VALUE).val("");
 					$(c.DOM_MESSAGE_VALUE).removeAttr('disabled');
 					$(c.DOM_MESSAGE_VALUE).focus();
+					v.set('uploadedFiles', []);
+					linkifyChat();
 				}
 			}).catch(function(error){
 				showErrors(error.response.data.messages);

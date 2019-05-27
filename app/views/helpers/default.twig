@@ -48,6 +48,23 @@
 			:
 			<br />
 			<span class="d-block topic-message" data-bind="text: value"></span>
+			<!-- ko foreach: files -->
+				<!-- ko if: type() === "DOC" -->
+					<a class="download-doc" target="_blank" data-bind="
+							text:  label() +' '+ size()+'kb',
+							attr: {href: '/assets/files/document/+path()'}
+					"></a>
+				<!-- /ko -->
+			<!-- /ko -->
+
+			<!-- ko foreach: files -->
+				<!-- ko if: type() === "IMG" -->
+					<a class="download-img" target="_blank" data-bind="attr: {href: '/assets/files/image/'+path()}">
+						<img data-bind="attr: {src: '/assets/files/image/'+path()}" /><br />
+						<span data-bind="text: label() +' '+ size()+'kb'"></span>
+					</a>
+				<!-- /ko -->
+			<!-- /ko -->
 		</li>
 		<!-- /ko -->
 	</ul>
@@ -69,13 +86,26 @@
 		<!-- /ko -->
 	</ul>
 	<ul class="files-list-imgs d-none">
-		im
 		<!-- ko foreach: files.IMG -->
+		<li>
+			<a data-bind="attr: { href : '/assets/files/image/'+ path() }" target="_blank" class="text-decoration-none">
+				<img data-bind="attr: {src: '/assets/files/image/'+ path() }" class="d-block w-100" />
+				<span data-bind="text: label"></span><br />
+				<span data-bind="text: size() + 'kb'"></span><br />
+				<small data-bind="text: created"></small>
+			</a>
+		</li>
 		<!-- /ko -->
 	</ul>
 	<ul class="files-list-docs d-none">
-		do
 		<!-- ko foreach: files.DOC -->
+		<li>
+			<a data-bind="attr: { href : '/assets/files/document/'+ path() }" target="_blank" class="text-decoration-none">
+				<span data-bind="text: '🖹 '+label()"></span><br />
+				<span data-bind="text: size() + 'kb'"></span><br />
+				<small data-bind="text: created"></small>
+			</a>
+		</li>
 		<!-- /ko -->
 	</ul>
 {% endmacro %}
@@ -85,22 +115,24 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h6 class="modal-title" id="filesModalLabel">upload file</h6>
+				<h6 class="modal-title" id="filesModalLabel">send files with next message</h6>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">×</span>
 				</button>
 			</div>
-			<div class="modal-body files-form">
-				<select class="form-control form-control-sm">
-					<option value="IMG">image</option>
-					<option value="DOC">document</option>
-				</select>
-				<input type="file" />
+			<div class="modal-body pb-0" data-bind="if: uploadedFiles().length > 0">
+				<small>uploaded files:</small>
+				<ul class="files-modal-list">
+					<!-- ko foreach: uploadedFiles -->
+					<li>
+						<small data-bind="text: type() + ':'"></small>
+						<span data-bind="text: name"></span>
+						<span data-bind="text: size() + 'kb'"></span>
+					</li>
+					<!-- /ko -->
+				</ul>
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">cancel</button>
-				<button type="button" class="btn btn-success message-attach btn-sm">upload</button>
-			</div>
+			{{ include("partials/form/upload.twig") }}
 		</div>
 	</div>
 </div>

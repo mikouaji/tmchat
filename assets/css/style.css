@@ -18,6 +18,7 @@ a:hover{
     height: 100%;
     z-index: 100;
 }
+select.form-control.form-control-sm,
 input.form-control.form-control-sm{
     background-color: #2b3e50;
     border: none;
@@ -67,7 +68,7 @@ ul.topic-window li span.topic-message{
     white-space: pre-wrap;
 }
 div.flash{
-    z-index: 20;
+    z-index: 2000;
     position: absolute;
     bottom: 20px;
     left: 10px;
@@ -100,7 +101,28 @@ div.files-col li:nth-of-type(2n){
 div.files-col li small{
     font-size: 9px;
 }
-select{
-    color: #ffffff !important;
-    background-color: #2b3e50 !important;
+ul.files-modal-list{
+    list-style: decimal;
+}
+ul.files-modal-list li{
+    padding:0;
+    margin: 0 0 0 3px;
+}
+a.download-img{
+    display: inline-block;
+    padding: 3px;
+    color: #000;
+    background: #abb6c2;
+    font-size:11px;
+    text-align: right;
+}
+a.download-doc{
+    font-size: 12px;
+}
+a.download-doc:before{
+    content: "🖹";
+    margin-right: 3px;
+}
+a.download-img img{
+    max-width: 200px;
 }

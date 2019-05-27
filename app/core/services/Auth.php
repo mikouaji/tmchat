@@ -32,6 +32,10 @@ class Auth
 			$this->type = User::GUEST;
 	}
 
+	public function getHashService(){
+	    return $this->hash;
+    }
+
 	public function generatePassword() : string
 	{
 		return $this->hash->encode(rand(0,10000)*3, self::HASH_SALT);

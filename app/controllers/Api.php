@@ -36,6 +36,10 @@ class Api extends Controller
         }else
             $data = $this->repository->getTopicsWithCurrentAndUnread();
         $responseData =[
+            'csrf' => [
+                'name'=>$this->security->get_csrf_token_name(),
+                'hash'=> $this->security->get_csrf_hash()
+            ],
             'obj' => $data,
             'messages' => ['ok']
         ];

@@ -10,6 +10,10 @@ define(function(){
         DOM_MESSAGE_VALUE: '.message-value',
         DOM_MESSAGE_SEND: '.message-send',
         DOM_MESSAGE_ATTACH: '.message-attach',
+        DOM_MESSAGE_ATTACHMENT: '.message-attachment',
+        DOM_MESSAGE_ATTACHMENT_TYPE: '.message-attachment-type',
+        DOM_MESSAGE_ATTACHMENT_LABEL: '.message-attachment-label',
+        DOM_FILES_FORM: '.files-form',
         DOM_FILES_TOGGLE: '.files-toggle',
         DOM_FILES_COL: '.files-col',
         DOM_FILES_LIST_URLS: '.files-list-urls',
@@ -24,8 +28,10 @@ define(function(){
         URL_GET : 'api/get/',
         URL_PUT : 'api/put/',
         TOPIC_GENERAL : 'general',
-        FLASH_TIMEOUT : 2500,
+        FLASH_TIMEOUT : 3500,
         KEYCODE_ENTER : 13,
+        FILE_DOC: "DOC",
+        FILE_IMG: "IMG",
         newErrorMessage : function(message){
             return '<div class="flash bg-danger"><small>error:</small>'+message+'</div>';
         },

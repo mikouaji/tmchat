@@ -21,6 +21,23 @@ class ChatRepository extends Repository
     }
 
     /**
+     * @param string $name
+     * @param int $size
+     * @param string $type
+     * @param string $label
+     * @return File
+     */
+    public function saveFile(string $name, int $size, string $type, string $label) : File {
+        $file = new File();
+        $file->setType($type)
+            ->setPath($name)
+            ->setLabel($label)
+            ->setSize($size)
+            ->save();
+        return $file;
+    }
+
+    /**
      * @param object $data
      * @return bool
      * @throws \Exception
@@ -37,10 +54,10 @@ class ChatRepository extends Repository
             ->save();
         $this->updateVisitTime($topic->getRealId());
         foreach($files as $file){
-            $this->addFile($file, $message);
+            $this->addFileToMessage($file, $message);
         }
         $response = [
-            'topic' => $topic->hideId(Topic::HASH_SALT)->getId(),
+            'topic' => $topic->hideId()->getId(),
             'message' => Message::findOne($message->getRealId())->toArray(),
         ];
         return SocketManager::message($response);
@@ -67,9 +84,10 @@ class ChatRepository extends Repository
      * @param object $file
      * @param Message $message
      */
-    public function addFile($file, Message $message){
+    public function addFileToMessage($file, Message $message){
         switch(strtoupper($file->type)){
-            case File::TYPE_URL: $this->addUrl($file->value, $file->href, $message); break;
+            case File::TYPE_URL: $this->addUrlToMessage($file->value, $file->href, $message); break;
+            default: $this->addOtherToMessage($file->id, $message);
         }
     }
 
@@ -78,7 +96,7 @@ class ChatRepository extends Repository
      * @param string $url
      * @param Message $message
      */
-    private function addUrl(string $label, string $url, Message $message){
+    private function addUrlToMessage(string $label, string $url, Message $message){
         $file = new File();
         $file->setMessage($message)
             ->setLabel($label)
@@ -87,12 +105,14 @@ class ChatRepository extends Repository
             ->save();
     }
 
-    private function addDoc(){
-
-    }
-
-    private function addImg(){
-
+    /**
+     * @param string $id
+     * @param Message $message
+     */
+    private function addOtherToMessage(string $id, Message $message){
+        $realId = $this->auth->getHashService()->decode($id, File::HASH_SALT);
+        if(!is_null($realId))
+            File::findOne($realId)->setMessage($message)->save();
     }
 
     /**
@@ -143,7 +163,7 @@ class ChatRepository extends Repository
                     WHERE user = 1 
                     ORDER BY v.date DESC, t.id DESC");
         foreach($query->result('app\models\Topic') as $topic){
-            $topic->hideId(Topic::HASH_SALT);
+            $topic->hideId();
             $active = $topic->getRealId() === $user->getLastTopic()->getId();
             $temp = $topic->toArray($active);
             $temp['active'] = $active;

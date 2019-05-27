@@ -1,0 +1,17 @@
+{{ form_open('/chat/upload', {class : 'files-form'}) }}
+<div class="modal-body">
+	<small>label</small>
+	{{ form_input({
+		name : 'label',
+		placeholder: 'shrot name',
+		class: 'form-control form-control-sm message-attachment-label',
+	}) }}
+	<small>file type</small>
+	{{ form_dropdown('type', {IMG:'image', DOC:'document'} ,{} ,{class:'form-control form-control-sm message-attachment-type'}) }}
+	{{ form_upload({class:'message-attachment'}) }}
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">close</button>
+	{{ form_submit('upload', 'upload', {class: 'btn btn-success message-attach btn-sm'}) }}
+</div>
+{{ form_close() }}

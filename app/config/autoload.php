@@ -108,7 +108,7 @@ $autoload['helper'] = array('form','url');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array('view','hashids','assets','twig','acl','socket');
+$autoload['config'] = array('view','hashids','assets','twig','acl','socket','upload');
 
 /*
 | -------------------------------------------------------------------

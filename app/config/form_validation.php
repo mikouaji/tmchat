@@ -26,6 +26,16 @@ $config = [
             ],
         ],
     ],
+    'attachment' => [
+        [
+            'field' => 'label',
+            'label' => 'label',
+            'rules' => 'trim|required',
+            'errors' => [
+                'required'=>'attachment label required',
+            ],
+        ],
+    ],
     'addTopic' => [
         [
             'field' => 'name',

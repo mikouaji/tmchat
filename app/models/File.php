@@ -33,16 +33,33 @@ class File extends Model
             'created'=> $this->getCreatedDate(),
             'type' => $this->getType(),
             'path' => $this->getPath(),
+            'size' => $this->getSize(),
             'label' => $this->getLabel(),
         ];
         if($full)
-            $array['message'] = is_null($this->getMessage()) ? NULL : $this->getMessage()->hideId(Message::HASH_SALT)->getId();
+            $array['message'] = is_null($this->getMessage()) ? NULL : $this->getMessage()->hideId()->getId();
         return $array;
     }
 
     public function setMessage(Message $message) : File{
         $this->message = $message->getRealId();
         return $this;
+    }
+
+    /**
+     * @param float $size
+     * @return File
+     */
+    public function setSize(float $size) : File {
+        $this->size = $size;
+        return $this;
+    }
+
+    /**
+     * @return float|NULL
+     */
+    public function getSize() {
+        return $this->size;
     }
 
     /**
