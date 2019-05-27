@@ -38,11 +38,11 @@ class ChatRepository extends Repository
     }
 
     /**
-     * @param object $data
+     * @param $data
      * @return bool
      * @throws \Exception
      */
-    public function sendMessage(object $data) : bool {
+    public function sendMessage($data) : bool {
         $user = $this->auth->getLoggedUser();
         $topic = $user->getLastTopic();
         $text = $data->value;
