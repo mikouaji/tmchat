@@ -162,9 +162,10 @@ class ChatRepository extends Repository
                     ON t.id = v.topic 
                     WHERE user = 1 
                     ORDER BY v.date DESC, t.id DESC");
+        $lastTopic = $user->getLastTopic();
         foreach($query->result('app\models\Topic') as $topic){
             $topic->hideId();
-            $active = $topic->getRealId() === $user->getLastTopic()->getId();
+            $active = (!is_null($lastTopic) and $topic->getRealId() === $lastTopic->getId()) ? TRUE : FALSE;
             $temp = $topic->toArray($active);
             $temp['active'] = $active;
             $temp['unread'] = $this->getUnreadCount($topic, $user);
