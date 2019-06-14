@@ -114,7 +114,7 @@ define(
 				let data = JSON.parse(message);
 				let files = v.get('files');
 				data.message.files.forEach(function(item){
-					files[item.type].push(item);
+					files[item.type].unshift(item);
 				});
 				v.set('files', files);
 				if(data.topic === v.get('current')){

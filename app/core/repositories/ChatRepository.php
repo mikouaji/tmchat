@@ -77,6 +77,9 @@ class ChatRepository extends Repository
         foreach($files as $file){
             $output[$file->getType()][] = $file->toArray();
         }
+        $output[File::TYPE_IMG] = array_reverse($output[File::TYPE_IMG]);
+        $output[File::TYPE_DOC] = array_reverse($output[File::TYPE_DOC]);
+        $output[File::TYPE_URL] = array_reverse($output[File::TYPE_URL]);
         return $output;
     }
 
