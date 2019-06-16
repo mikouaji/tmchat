@@ -27,6 +27,9 @@ $config['acl'] = [
             'index'=>[
                 'allow'=>['MEMBER', 'ADMIN'],
             ],
+            'settings'=>[
+                'allow'=>['MEMBER', 'ADMIN'],
+            ],
             'upload'=>[
                 'allow'=>['MEMBER', 'ADMIN'],
             ],

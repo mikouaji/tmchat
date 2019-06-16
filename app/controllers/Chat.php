@@ -3,6 +3,8 @@
 use app\core\APP_Controller as Controller;
 
 use app\core\repositories\ChatRepository;
+use app\models\User;
+use app\core\services\FlashMessage;
 
 class Chat extends Controller
 {
@@ -16,6 +18,37 @@ class Chat extends Controller
         $this->view->user = $this->service->auth->getLoggedUser();
         $socketCfg = config_item('socket');
         $this->view->socketAddr = $socketCfg['address']. ":" . $socketCfg['port'];
+    }
+
+    public function settings(){
+        $this->view->setLayout('default');
+        $user = $this->service->auth->getLoggedUser();
+        if($this->form_validation->run('settings')!==FALSE){
+            $formData = $this->input->post();
+            $login = $user->getLogin();
+            if(is_null(User::findOne(['login'=>$formData['login']])))
+                $login = $formData['login'];
+            elseif($formData['login']!==$user->getLogin())
+                    $this->service->flash->add("this login is taken", FlashMessage::DANGER);
+
+            $token = NULL;
+            if(isset($formData['remember']) && $formData['remember'] === 'yes'){
+                $token = $this->service->auth->generateAndSetRememberToken($user);
+                $remember = TRUE;
+            }else
+                $remember = FALSE;
+
+            if(!empty($formData['password']))
+                $user->setPassword($this->service->auth->hashPassword($formData['password']));
+
+            $success = $user->setLogin($login)
+                ->setRemember($remember)
+                ->setRememberToken($token)
+                ->save();
+            if($success)
+                $this->service->flash->add('data saved', FlashMessage::SUCCESS);
+        }
+        $this->view->user = $user;
     }
 
     public function upload(){

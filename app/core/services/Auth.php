@@ -12,9 +12,9 @@ use app\models\User;
 
 class Auth
 {
-	const LOST_PWD_CODE_LEN = 40;
-	const ACTIVATE_CODE_LEN = 40;
 	const HASH_SALT = 'auth';
+	const REMEMBER_COOKIE_EXPIRATION = 365 * 24 * 60 * 60;
+	const REMEMBER_COOKIE_NAME = "3Mm83ErR";
 
 	protected $session;
 
@@ -34,6 +34,33 @@ class Auth
 
 	public function getHashService(){
 	    return $this->hash;
+    }
+
+    /**
+     * @return User|NULL
+     */
+    public function checkRememberTokenAndLogin() {
+        $cookie = get_cookie(self::REMEMBER_COOKIE_NAME);
+        if(is_null($cookie))
+            return NULL;
+        $user = User::findOne(['remember_token'=>$cookie]);
+        if(is_null($user))
+            return NULL;
+        $userIdHash = substr($cookie, 0 ,$this->hash->getLength());
+        $userLoginHash = substr($cookie,$this->hash->getLength());
+        if($user->getRemember() and $userIdHash === $user->hideId()->getId() and password_verify($user->getLogin(), $userLoginHash))
+            return $user;
+        return NULL;
+    }
+
+    /**
+     * @param User $user
+     * @return string
+     */
+    public function generateAndSetRememberToken(User $user) : string {
+	    $token =  $user->hideId()->getId().$this->hashPassword($user->getLogin());
+	    set_cookie(self::REMEMBER_COOKIE_NAME, $token, self::REMEMBER_COOKIE_EXPIRATION);
+	    return $token;
     }
 
 	public function generatePassword() : string
@@ -64,8 +91,7 @@ class Auth
 	 */
 	public function getLoggedUser() : User
 	{
-		$user = new User();
-		return $user->findOne($this->getId());
+		return User::findOne($this->getId());
 	}
 
 	/**
@@ -84,11 +110,6 @@ class Auth
 		return $this->type;
 	}
 
-	private function _checkRememberCookie()
-	{
-		return false;
-	}
-
 	private function _hasSessionData() : bool
 	{
 		if($this->session->has_userdata('logged') and $this->session->userdata('logged')===1)
@@ -105,10 +126,10 @@ class Auth
 
 	public function login(User $user)
 	{
-		$this->set($user->getId(), $user->getType());
+		$this->set($user->getRealId(), $user->getType());
 	}
 
-	public function set($userId, $userType)
+	public function set(int $userId, string $userType)
 	{
 		$idHash = $this->hash->encode($userId,self::HASH_SALT);
 		$this->logged = 1;
@@ -123,6 +144,7 @@ class Auth
 
 	public function logout()
 	{
+	    delete_cookie(self::REMEMBER_COOKIE_NAME);
 		$this->clear();
 	}
 

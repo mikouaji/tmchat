@@ -56,4 +56,11 @@ class Hash
 			$this->hashids[$type] = new Hashids($this->salts[$type], $this->length, $this->alphabet);
 		return $this->hashids[$type];
 	}
+
+    /**
+     * @return int
+     */
+	public function getLength() : int {
+	    return $this->length;
+    }
 }

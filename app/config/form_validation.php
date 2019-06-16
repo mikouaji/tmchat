@@ -8,6 +8,38 @@
 $config = [
 	'error_prefix'=>'<small class="bg-danger p-1">',
 	'error_suffix'=>'</small>',
+    'settings'=>[
+        [
+            'field' => 'login',
+            'label' => 'login',
+            'rules' => 'trim|required',
+            'errors' => [
+                'required'=>'field required'
+            ],
+        ],
+        [
+            'field' => 'password',
+            'label' => 'password',
+            'rules' => 'trim',
+            'errors' => [
+                'required'=>'field required'
+            ],
+        ],
+        [
+            'field' => 'password_repeat',
+            'label' => 'password_repeat',
+            'rules' => 'trim|matches[password]',
+            'errors' => [
+                'matches'=>'passwords must match'
+            ],
+        ],
+        [
+            'field' => 'remember',
+            'label' => 'remember',
+            'rules' => '',
+            'errors' => [],
+        ],
+    ],
     'login' => [
         [
             'field' => 'login',

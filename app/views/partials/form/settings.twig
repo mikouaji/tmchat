@@ -1,0 +1,37 @@
+{{ form_open("/settings") }}
+<div class="form-group">
+	<h5>change login</h5>
+	{{ form_input({
+		class : 'form-control form-control-sm',
+		name : 'login',
+		placeholder: "login",
+		value: set_value('login',user.getLogin)
+	}) }}
+	{{ form_error('login') }}
+</div>
+<div class="form-group">
+	<h5>change password</h5>
+	{{ form_password({
+		class : 'form-control form-control-sm',
+		name : 'password',
+		placeholder: 'password',
+	}) }}
+	{{ form_error('password') }}
+</div>
+<div class="form-group">
+	{{ form_password({
+		class : 'form-control form-control-sm',
+		name : 'password_repeat',
+		placeholder: 'repeat password',
+	}) }}
+	{{ form_error('password_repeat') }}
+</div>
+<div class="form-group">
+	<h5>keep me logged in</h5>
+	{{ form_checkbox('remember', 'yes', user.getRemember, {
+		class : 'form-control form-control-sm',
+	}) }}
+	{{ form_error('remember') }}
+</div>
+{{ form_submit('save',"save", { class : 'btn btn-secondary btn-sm text-center' }) }}
+{{ form_close() }}

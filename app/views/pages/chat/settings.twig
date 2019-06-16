@@ -1,0 +1,18 @@
+<div class="row justify-content-between pt-3 pb-3">
+	<div class="col-2">
+		<a href="/chat" class="text-decoration-none">
+			<img src="/assets/img/logo.svg" />
+			chat app
+		</a>
+	</div>
+	<div class="col-10 text-right">
+		logged in as <span class="text-warning">{{ user.getLogin }}</span>
+		<a href="/chat" class="btn btn-warning text-decoration-none text-dark btn-sm">chat</a>
+		<a href="/logout" class="btn btn-danger btn-sm text-white text-decoration-none">logout</a>
+	</div>
+</div>
+<div class="row flex-fill">
+	<div class="col col-md-4 offset-md-4 d-flex flex-column text-center">
+		{{ include('partials/form/settings.twig') }}
+	</div>
+</div>

@@ -22,13 +22,15 @@ class Home extends Controller
 
 	public function index()
 	{
+	    $user = $this->service->auth->checkRememberTokenAndLogin();
+        if(!is_null($user))
+            $this->login($user);
         if($this->form_validation->run('login')!==FALSE){
             $formData = $this->input->post();
             $user = User::findOne(['login'=>$formData['login']]);
             if($user and $this->service->auth->checkPassword($user, $formData['password'])){
                 if(SocketManager::start()){
-                    $this->service->auth->login($user);
-                    $this->service->redirect->go('chat');
+                    $this->login($user);
                 }else
                     $this->service->flash->add("service temporary unavailable", FlashMessage::INFO);
             }else{
@@ -36,4 +38,11 @@ class Home extends Controller
             }
         }
 	}
+
+	private function login(User $user){
+	    if($user->getRemember())
+	        $user->setRememberToken($this->service->auth->generateAndSetRememberToken($user))->save();
+        $this->service->auth->login($user);
+        $this->service->redirect->go('chat');
+    }
 }

@@ -40,6 +40,39 @@ class User extends Model
 	}
 
     /**
+     * @param string $token
+     * @return User
+     */
+	public function setRememberToken(string $token) : User {
+	    $this->remember_token = $token;
+	    return $this;
+    }
+
+    /**
+     * @return string|NULL
+     */
+	public function getRememberToken() {
+	    return $this->remember_token;
+    }
+
+
+    /**
+     * @param bool $rememeber
+     * @return User
+     */
+	public function setRemember(bool $rememeber) : User {
+	    $this->remember = $rememeber;
+	    return $this;
+    }
+
+    /**
+     * @return bool
+     */
+	public function getRemember() : bool {
+	    return $this->remember;
+    }
+
+    /**
      * @param Topic $topic
      * @return User
      */
@@ -56,6 +89,15 @@ class User extends Model
     }
 
     /**
+     * @param string $password
+     * @return User
+     */
+    public function setPassword(string $password) : User {
+        $this->password = $password;
+        return $this;
+    }
+
+    /**
      * @return string
      */
 	public function getPassword() : string {
@@ -67,6 +109,15 @@ class User extends Model
      */
 	public function getLogin() : string {
 	    return $this->login;
+    }
+
+    /**
+     * @param string $login
+     * @return User
+     */
+    public function setLogin(string $login) : User {
+	    $this->login = $login;
+	    return $this;
     }
 
     /**
