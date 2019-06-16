@@ -90,7 +90,7 @@ class Assets
 	 */
 	private function _minify(array $localScripts, string $dir, string $name, string $type="css") : array
 	{
-		$minPath = (ENVIRONMENT == "production") ? $dir."/".$name.".-.".$this->_version.".min.".$type : $dir."/".$name.".min.".$type;
+		$minPath = (ENVIRONMENT == "production") ? $dir."/".$name."-".$this->_version.".min.".$type : $dir."/".$name.".min.".$type;
 
 		$newFile = [
 			[
@@ -107,7 +107,7 @@ class Assets
 		}
 		if(ENVIRONMENT == "production" and file_exists(FCPATH.$minPath))
 			return $newFile;
-
+		touch(FCPATH.$minPath);
 		foreach($localScripts as $file)
 		{
 			$minifier->add(explode("?",$file['url'])[0]);
